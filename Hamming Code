@@ -1,0 +1,58 @@
+//Hamming Code Implementation
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int data[8];  // Array size changed to 8 for 0-based indexing.
+    int databit[8],c1,c2,c3,c,i;
+
+    cout<<"\nEnter 4 Databits: ";
+
+    cin>>data[7];
+    cin>>data[6];
+    cin>>data[5];
+    cin>>data[3];
+
+    // Calculate parity bits
+    data[4]=data[5]^data[6]^data[7];
+    data[2]=data[3]^data[6]^data[7];
+    data[1]=data[3]^data[5]^data[7];
+
+    cout<<"\nEncoded Data is: ";
+    for(i=1;i<=7;i++)  // Loop from 1 to 7 for 1-based indexing
+    {
+        cout<<data[i];
+    }
+    cout<<"\nEnter Received Data one by one: ";
+    for(i=1;i<=7;i++)  // Loop from 1 to 7 for 1-based indexing
+    {
+        cin>>databit[i];
+    }
+
+    // Calculate the syndrome bits
+    c1=databit[1]^databit[3]^databit[5]^databit[7];
+    c2=databit[2]^databit[3]^databit[6]^databit[7];
+    c3=databit[4]^databit[5]^databit[6]^databit[7];
+
+    // Calculate the error position
+    c=c3*4+c2*2+c1;
+
+    if(c==0)
+    {
+        cout<<"\nCongratulations!! There is no error.";
+    }
+    else
+    {
+        cout<<"\nError on position: "<<c;
+        cout<<"\nCorrected Message is: ";
+        databit[c]=databit[c]^1;  // Correct the error bit
+        
+        for(i=1;i<=7;i++)  // Loop from 1 to 7 for 1-based indexing
+        {
+            cout<<databit[i];
+        }
+    }
+
+    return 0;
+}
